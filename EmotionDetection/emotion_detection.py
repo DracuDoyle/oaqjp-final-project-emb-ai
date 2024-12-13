@@ -3,6 +3,16 @@ import json
 
 
 def emotion_detector( text_to_analyse ) :
+
+    if( not text_to_analyse ) :
+        return {
+            "anger": None,
+            "disgust": None,
+            "fear": None,
+            "joy": None,
+            "sadness": None,
+            "dominant_emotion": None
+        }
     
     URL = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
     HEADERS = {
@@ -16,6 +26,16 @@ def emotion_detector( text_to_analyse ) :
     try :
 
         response = requests.post( URL, headers = HEADERS, json = DATA )
+
+        if( response.status_code == 400 ) :
+            return {
+                "anger": None,
+                "disgust": None,
+                "fear": None,
+                "joy": None,
+                "sadness": None,
+                "dominant_emotion": None
+            }
 
         if( ( response.status_code >= 200 ) and ( response.status_code < 300 ) ) :
 
